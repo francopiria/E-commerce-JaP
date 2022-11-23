@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>eMercado - Todo lo que busques está aquí</title>
+  
+  <link href="https://fonts.googleapis.com/css?family=Raleway:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/styles.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: rgb(248, 249, 250);
+    }
+  </style>
+</head>
+
+
+<body>
+  <main class="mt-5">
+    <div id= "big-container" class="container">
+      <img id = "logo" src="/img/login.png" alt="Logo E-Mercado">
+      <h1 class="mb-3"> Inicio de Sesión </h1>
+      <hr class="my-4">
+
+      <div class="row g-3">
+        
+        <div class="col-12">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email">
+        </div>
+
+        <div class="col-12">
+          <label for="password" class="form-label">Contraseña</label>
+          <input type="password" class="form-control" id="password">
+        </div>
+
+        <button class="btn btn-primary" type="button" id="logBtn">Ingresar</button>
+
+        <div id="g_id_onload"
+          data-client_id="302887022680-5p5c9tlhhipj3esdaupoeqa8k6p7mg2s.apps.googleusercontent.com"
+          data-callback="showAlertSuccess">
+        </div>
+
+      </div>
+
+      <div class="g_id_signin" data-type="standard">
+      </div>
+    </div>
+  </main>
+
+
+  <footer class="text-muted">
+    <div class="container">
+      <p class="float-end">
+        <a href="#">Volver arriba</a>
+      </p>
+      <p>Este sitio forma parte de <a href="https://jovenesaprogramar.edu.uy/" target="_blank">Jovenes a Programar</a> -
+        2022</p>
+      <p>Clickea <a target="_blank" href="Letra.pdf">aquí</a> para descargar la letra del obligatorio.</p>
+    </div>
+  </footer>
+
+  <div class="alert alert-success alert-dismissible fade" role="alert" id="alert-success">
+    <p>Estás ingresando a E-Mercado (◕‿◕✿)</p>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+
+  <div class="alert alert-danger alert-dismissible fade" role="alert" id="alert-danger">
+    <p>Debes llenar los dos campos (de girasoles (◡ ‿ ◡ ✿))</p>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  
+
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/login.js"></script>
+</body>
+
+</html>
