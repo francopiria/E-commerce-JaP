@@ -12,7 +12,8 @@ let articles = []
 let cartBody = document.getElementById("cartBody")
 
 let subtotalFinal = document.getElementById("subtotal-final")
-let subtotalFinalValue = 0
+let subtotalFinalValue
+
 let costoEnvio = document.getElementById("costo-envio")
 let total = document.getElementById("total")
 
@@ -34,13 +35,13 @@ let pagoSeleccionado = document.getElementById("pago-seleccionado")
 
 
 
-articles = JSON.parse(localStorage.getItem("articlesInCart"))
-//pero los objetos no son iterables, entonces convierto en array
-articles = Object.values(articles)
 
-function showCart(){
-    console.log(articles)
-    let subtotalFinalToAppend = 0
+    articles = JSON.parse(localStorage.getItem("articlesInCart"))
+    //pero los objetos no son iterables, entonces convierto en array
+    articles = Object.values(articles)
+
+
+function createCartTable(){
     for (let article of articles)
     {   
         let cartTR = document.createElement("tr");
@@ -54,32 +55,53 @@ function showCart(){
         `
         cartBody.appendChild(cartTR)
 
-        subtotalFinalToAppend += article.unitCost*article.count
-        subtotalFinalValue += subtotalFinalToAppend
-        subtotalFinal.innerHTML= article.currency + " " + subtotalFinalValue
+        subtotalFinalValue += article.unitCost*article.count
+    }
+}
+
+function showCart(){
+    console.log(articles)
+    subtotalFinalValue = 0
+    for (let article of articles)
+    {   
+        let cartTR = document.createElement("tr");
+        cartTR.innerHTML = `
+        <th scope="row">${articles.indexOf(article) + 1}</th>
+        <td><img class="cartIMG" src="${article.image}"></td>
+        <td>${article.name}</td>
+        <td>${article.currency + " " +article.unitCost}</td>
+        <td> <input type="number" value="${article.count}" min=1 required > </td>
+        <td class="subtotal">${article.currency + " " + article.unitCost*article.count}</td>
+        `
+        cartBody.appendChild(cartTR)
+
+        subtotalFinalValue += article.unitCost*article.count
+       
         
         let input = cartTR.querySelector("input")
         input.addEventListener("input",()=>{
 
             article.count = input.value
             localStorage.setItem("articlesInCart", JSON.stringify(articles))
+            console.log(articles)
             
-            let subtotal = input.value* article.unitCost
+            // let subtotal = Math.round((article.count* article.unitCost)*100)/100
+            let subtotal = (article.count* article.unitCost).toFixed(2)
+
             cartTR.querySelector(".subtotal").innerHTML= `${article.currency} ${subtotal}`
 
-            // subtotalFinal.innerHTML= article.currency + " " + subtotalFinalValue
+            subtotalFinalValue = 0
+            for (articlee of articles){
+                subtotalFinalValue+= articlee.unitCost*articlee.count
+            }
+            subtotalFinal.innerHTML= "USD " + subtotalFinalValue.toFixed(2)
 
+            calculateCostoDeEnvio()
 
-            // subtotalFinal.innerHTML= ``
-            // // Creo que esto da el problema de que al cambiar un segundo input se caga el subt final
-            // subtotalFinalToAppend = 0
-            // for (article of articles){
-            //     subtotalFinalToAppend += article.unitCost*article.count
-            //     subtotalFinal.innerHTML= article.currency + " " + subtotalFinalToAppend
-            // }
         })
     }
-
+    subtotalFinal.innerHTML= "USD " + Math.round(subtotalFinalValue*100)/100
+    console.log(articles)
 }
 
 
@@ -99,8 +121,8 @@ function radioSeleccionado (radios){
 
 function calculateCostoDeEnvio(){
     let envioSeleccionado = Number(radioSeleccionado(envios).value)
-    costoEnvio.innerHTML = `USD ${envioSeleccionado*subtotalFinalValue}`
-    total.innerHTML = `USD ${envioSeleccionado*subtotalFinalValue + subtotalFinalValue}`
+    costoEnvio.innerHTML = `USD ${Math.round((envioSeleccionado*subtotalFinalValue)*100)/100}`
+    total.innerHTML = `USD ${Math.round((envioSeleccionado*subtotalFinalValue + subtotalFinalValue)*100)/100}`
 }
 
 // Hay que corregirlo para no tener que llamar a la función cada vez sino que el radio se guarde en una variable
@@ -121,48 +143,64 @@ function paymentMethodSelected(){
 function savePaymentOption(){
     console.log("save clicked")
     let paymentMethodSelected = radioSeleccionado(tiposDePago)
+    let mensajeMissing = document.getElementById("payment-method-message-missing")
+    let mensajeElegiste = document.getElementById("payment-method-message-ok")
 
     if (paymentMethodSelected.value == "credit"){
         pagoSeleccionado.innerHTML = `Tarjeta de Crédito`
-    }else{
+        mensajeElegiste.classList.remove("d-none")
+        mensajeMissing.classList.remove("d-inline")
+        mensajeMissing.classList.add("d-none")
+
+    } else if(paymentMethodSelected.value == "transf"){
         pagoSeleccionado.innerHTML = `Transferencia Bancaria`
+        mensajeElegiste.classList.remove("d-none")
+        mensajeMissing.classList.remove("d-inline")
+        mensajeMissing.classList.add("d-none")
+
+    } else{
+        mensajeMissing.classList.remove("d-none")
+        mensajeMissing.classList.add("d-inline")
     }
+
+
+        
+ 
 }
 
-// Al presionarlo deberán ejecutarse las siguientes validaciones (dando el feedback correspondiente al usuario):
-
-// Los campos calle, número y esquina, no podrán estar vacíos.
-
-// Deberá estar seleccionada la forma de envío.
-
-// La cantidad para cada artículo deberá estar definida y ser mayor a 0
-
-// Deberá haberse seleccionado una forma de pago
-
-// Los campos, para la forma de pago seleccionada, no podrán estar vacíos
 
 function submitPurchase(){
     console.log("se finalizará la compra")
-    console.log("calle numero esquina y tipo de pago seleccionado")
+
+    if(!radioSeleccionado(tiposDePago)){
+        console.log("no seleccionaste método de pago")
+        let mensajeMissing = document.getElementById("payment-method-message-missing")
+        console.log(mensajeMissing)
+        mensajeMissing.classList.remove("d-none")
+        mensajeMissing.classList.add("d-inline")
+    }
+
     compraExitosa()
+
 };
 
 function compraExitosa (){
-    if (purchaseForm.checkValidity){
-        showAlertSuccess()
+
+    if (purchaseForm.checkValidity()){ 
         localStorage.removeItem("cartNumbers")
         localStorage.removeItem("articlesInCart")
         localStorage.removeItem("totalCost")
+        showAlertSuccess()
+        window.location.href = "index.html"
+        // document.window.location.href = "index.html"
     }
 };
-
-
-
 
 
 document.addEventListener("DOMContentLoaded", function(){
 
     showCart()
+    calculateCostoDeEnvio()
 
 
 });

@@ -93,6 +93,7 @@ function setProductIntoArticle(product){
         "name": product.name,
         "count": product.count,
         "unitCost": Math.round(product.cost*UYUtoUSD*100)/100,
+        // "unitCost": (product.cost*UYUtoUSD).toFixed(2),
         "currency": "USD",
         "image": product.images[1]
         }
@@ -102,6 +103,7 @@ function setProductIntoArticle(product){
             "name": product.name,
             "count": product.count,
             "unitCost": product.cost,
+            // "unitCost": product.cost.toFixed(2),
             "currency": product.currency,
             "image": product.images[1]
             }

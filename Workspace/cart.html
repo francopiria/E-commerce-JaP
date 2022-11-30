@@ -96,8 +96,10 @@
                   name="tipo-de-envio"
                   id="premium"
                   value="0.15"
+                  required
                 />
                 <label for="premium">Premium 2 a 5 días (15%) </label>
+                
               </div>
 
               <div class="form-check">
@@ -120,13 +122,18 @@
                   name="tipo-de-envio"
                   id="standard"
                   value="0.05"
+                  checked="checked"
                 />
                 <label for="standard">Standard 12 a 15 días (5%) </label>
+                <div class="invalid-feedback">
+                  Por favor, elige un tipo de envío :)
+                </div>
+                <div class="valid-feedback">Tipo de envío seleccionado!</div>
               </div>
 
-              <div class="valid-feedback">Dato ingresado!</div>
+              
               <div class="invalid-feedback">
-                Por favor, completa este campo :)
+                Por favor, elige un tipo de envío :)
               </div>
             </div>
           </div>
@@ -158,6 +165,7 @@
                   <label for="numero" class="form-label">Número</label>
                   <input
                     type="number"
+                    min="0"
                     class="form-control"
                     name="numero"
                     id="numero"
@@ -239,7 +247,16 @@
             <div class="row">
               <h2>Forma de Pago</h2>
               <div class="d-flex w-100">
-                <p id="pago-seleccionado">No ha Seleccionado</p>
+                <!-- <input
+                  type="text"
+                  class="form-control"
+                  name="pago-seleccionado
+                  id="pago-seleccionado"
+                  placeholder="No ha seleccionado"
+                  required
+                /> -->
+                <p id="pago-seleccionado">
+                  No ha Seleccionado</p>
                 <a
                   class="px-3"
                   href=""
@@ -247,10 +264,18 @@
                   data-bs-target="#staticBackdrop"
                   >Seleccionar</a
                 >
-                <div class="valid-feedback">Forma de pago seleccionada!</div>
+                <br>
+                <br>
+                <hr>
+
+                <p class="d-none text-danger" id="payment-method-message-missing">Por favor elige una forma de pago :)</p>
+                <p class="d-none text-success" id="payment-method-message-ok">gracias por elegir forma de pago crack :)</p>
+                <!-- <div class="valid-feedback">Forma de pago seleccionada!</div>
                 <div class="invalid-feedback">
-                  Debe seleccionar una forma de pago
-                </div>
+                  Debe seleccionar una forma de pago -->
+                <!-- </div> -->
+
+
               </div>
             </div>
           </div>
@@ -293,6 +318,7 @@
                     name="tipo-de-pago"
                     id="credit"
                     value="credit"
+                    
                   />
                   <label for="credit">Tarjeta de Crédito </label>
                 </div>
@@ -310,8 +336,9 @@
                         name="numero-tarjeta"
                         id="numero-tarjeta"
                         placeholder="1234-5678-9123-4567"
+                        min="100000000000"
+                        max="999999999999"
                         required
-                        min="1000000000000000"
                       />
                       <div class="valid-feedback">Dato ingresado!</div>
                       <div class="invalid-feedback">
@@ -329,6 +356,8 @@
                         name="codigo-seguridad"
                         id="codigo-seguridad"
                         placeholder="123"
+                        min=1
+                        max=9999
                         required
                       />
                       <div class="valid-feedback">Dato ingresado!</div>
@@ -337,17 +366,17 @@
                       </div>
                     </div>
                   </div>
+                  
                   <div class="row">
                     <div class="col-6">
                       <label for="vencimiento" class="form-label"
                         >Vencimiento</label
                       >
                       <input
-                        type="text"
+                        type="month"
                         class="form-control mb-3"
                         name="vencimiento"
                         id="vencimiento"
-                        placeholder="MM/AA"
                         required
                       />
                       <div class="valid-feedback">Dato ingresado!</div>
@@ -357,6 +386,7 @@
                     </div>
                   </div>
                 </fieldset>
+                <br>
 
                 <div class="form-check">
                   <input
@@ -380,6 +410,7 @@
                     name="numero-cuenta"
                     id="numero-cuenta"
                     placeholder="123456789"
+                    min="1"
                     required
                   />
                   <div class="valid-feedback">Dato ingresado!</div>
