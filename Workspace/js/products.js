@@ -59,11 +59,11 @@ function setProductID(id) {
 
 //función que guarda el ID del producto y redirecciona
 
-function showProductsList() {
+function showProductsList(array) {
   let HTMLContentToAppend = "";
 
-  for (let i = 0; i < currentProductsArray.length; i++) {
-    let product = currentProductsArray[i];
+  for (let i = 0; i < array.length; i++) {
+    let product = array[i];
 
     if (
       (minCount == undefined ||
@@ -110,7 +110,7 @@ function sortAndShowProducts(sortCriteria, productsArray) {
   );
 
   //Muestro los productos ordenados
-  showProductsList();
+  showProductsList(currentProductsArray);
 }
 
 document.addEventListener("DOMContentLoaded", function (e) {
@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", function (e) {
     if (resultObj.status === "ok") {
       currentProductsArray = resultObj.data.products;
       strongProduct.innerText = resultObj.data.catName;
-      showProductsList();
+      showProductsList(currentProductsArray);
       //sortAndShowProducts(ORDER_ASC_BY_NAME, resultObj.data);
     }
   });
@@ -138,13 +138,14 @@ document.addEventListener("DOMContentLoaded", function (e) {
   document
     .getElementById("clearRangeFilter")
     .addEventListener("click", function () {
+      searchBar.value = []
       document.getElementById("rangeFilterCountMin").value = "";
       document.getElementById("rangeFilterCountMax").value = "";
 
       minCount = undefined;
       maxCount = undefined;
 
-      showProductsList();
+      showProductsList(currentProductsArray);
     });
 
   document
@@ -167,13 +168,13 @@ document.addEventListener("DOMContentLoaded", function (e) {
         maxCount = undefined;
       }
 
-      showProductsList();
+      showProductsList(currentProductsArray);
     });
 
   searchBar.addEventListener("keyup", function () {
-    console.log(searchBar.value);
 
-    currentProductsArray = currentProductsArray.filter(
+    console.log(searchBar.value);
+    searchProductsArray = currentProductsArray.filter(
       (currentProductsArray) =>
         currentProductsArray.name
           .toLowerCase()
@@ -183,9 +184,9 @@ document.addEventListener("DOMContentLoaded", function (e) {
           .includes(searchBar.value.toLowerCase())
     );
 
-    console.log(currentProductsArray);
+    console.log(searchProductsArray);
 
-    showProductsList();
+    showProductsList(searchProductsArray);
   });
 
   console.log(currentProductsArray);
