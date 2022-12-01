@@ -1,25 +1,25 @@
-const URL = PRODUCT_INFO_URL + localStorage.getItem("productID") + EXT_TYPE
-const URLcomment = PRODUCT_INFO_COMMENTS_URL + localStorage.getItem("productID") + EXT_TYPE
+const URL = PRODUCT_INFO_URL + localStorage.getItem("productID") + EXT_TYPE;
+const URLcomment =
+  PRODUCT_INFO_COMMENTS_URL + localStorage.getItem("productID") + EXT_TYPE;
 
-let productContainer = document.getElementById("product-container")
+let productContainer = document.getElementById("product-container");
 
-let productComments = document.getElementById("product-comments")
-let relatedProducts =document.getElementById("related-products")
+let productComments = document.getElementById("product-comments");
+let relatedProducts = document.getElementById("related-products");
 
 let currentProduct = [];
 let currentComments = [];
 
 function setProductID(id) {
-    localStorage.setItem("productID", id);
-    window.location = "product-info.html"
+  localStorage.setItem("productID", id);
+  window.location = "product-info.html";
 }
 
-function showProduct(){
+function showProduct() {
+  let product = currentProduct;
+  let currentArticle = [];
 
-    let product = currentProduct
-    let currentArticle = []
-
-    productContainer.innerHTML = `
+  productContainer.innerHTML = `
 
         <div class="list-group-item">
             <h1> ${product.name}</h1>
@@ -68,156 +68,134 @@ function showProduct(){
             </div>
         </div>`;
 
-        appendImages()
+  appendImages();
 
-        let addToCartBtn = document.getElementById("add-to-cart-btn")
+  let addToCartBtn = document.getElementById("add-to-cart-btn");
 
-        
-
-        addToCartBtn.addEventListener("click", function(){
-
-            currentArticle = setProductIntoArticle(product)
-            cartNumbers(currentArticle)
-            totalCost(currentArticle)
-        } )
-};
-
-function setProductIntoArticle(product){
-
-    let currentArticle = []
-
-    console.log(product.currency)
-    if(product.currency === "UYU"){
-        currentArticle = {
-        "id": product.id,
-        "name": product.name,
-        "count": product.count,
-        "unitCost": Math.round(product.cost*UYUtoUSD*100)/100,
-        // "unitCost": (product.cost*UYUtoUSD).toFixed(2),
-        "currency": "USD",
-        "image": product.images[1]
-        }
-    } else{
-        currentArticle = {
-            "id": product.id,
-            "name": product.name,
-            "count": product.count,
-            "unitCost": product.cost,
-            // "unitCost": product.cost.toFixed(2),
-            "currency": product.currency,
-            "image": product.images[1]
-            }
-    }
-    console.log(currentArticle)
-
-    return currentArticle
+  addToCartBtn.addEventListener("click", function () {
+    currentArticle = setProductIntoArticle(product);
+    cartNumbers(currentArticle);
+    totalCost(currentArticle);
+  });
 }
 
-// no estoy pudiendo usar la función 
+function setProductIntoArticle(product) {
+  let currentArticle = [];
 
+  console.log(product.currency);
+  if (product.currency === "UYU") {
+    currentArticle = {
+      id: product.id,
+      name: product.name,
+      count: product.count,
+      unitCost: Math.round(product.cost * UYUtoUSD * 100) / 100,
+      // "unitCost": (product.cost*UYUtoUSD).toFixed(2),
+      currency: "USD",
+      image: product.images[1],
+    };
+  } else {
+    currentArticle = {
+      id: product.id,
+      name: product.name,
+      count: product.count,
+      unitCost: product.cost,
+      // "unitCost": product.cost.toFixed(2),
+      currency: product.currency,
+      image: product.images[1],
+    };
+  }
+  console.log(currentArticle);
 
+  return currentArticle;
+}
 
+function appendImages() {
+  let imagesDiv = document.getElementById("carousel-images");
+  product = currentProduct;
 
-function appendImages(){
+  let HTMLContentToAppend = ``;
 
-
-    let imagesDiv = document.getElementById("carousel-images");
-    product = currentProduct;
-
-    let HTMLContentToAppend = ``;
-
-    for (let i = 0; i<product.images.length; i++) {
-
-        if(i==0){
-        HTMLContentToAppend +=`
+  for (let i = 0; i < product.images.length; i++) {
+    if (i == 0) {
+      HTMLContentToAppend += `
             <div class="carousel-item active">
                 <img src="${product.images[i]}" class="d-block w-100" alt="${product.name}">
             </div>
-            `
-        } else {
-            HTMLContentToAppend +=`
+            `;
+    } else {
+      HTMLContentToAppend += `
             <div class="carousel-item">
             <img src="${product.images[i]}" class="d-block w-100" alt="${product.name}">
             </div>
-            `
-        }
+            `;
     }
-    imagesDiv.innerHTML = HTMLContentToAppend;
+  }
+  imagesDiv.innerHTML = HTMLContentToAppend;
 }
 
+function appendComments() {
+  console.log(currentComments);
 
+  let HTMLContentToAppend = "";
 
-function appendComments(){
-
-    console.log(currentComments)
-
-    let HTMLContentToAppend = "";
-
-    for (let comment of currentComments){
-
-        HTMLContentToAppend += `
+  for (let comment of currentComments) {
+    HTMLContentToAppend += `
         <div class="container">
             <div class="list-group-item">
                 <div>
-                    <p> <strong> ${comment.user} </strong> ${comment.dateTime} - ${stars(comment.score)}
+                    <p> <strong> ${comment.user} </strong> ${
+      comment.dateTime
+    } - ${stars(comment.score)}
                     </p>
                     <p> ${comment.description} </p>
                 </div>
             </div>
         </div>
-        `
-    }
-    productComments.innerHTML += HTMLContentToAppend
-
+        `;
+  }
+  productComments.innerHTML += HTMLContentToAppend;
 }
-
-
 
 function stars(score) {
-    let HTMLContentToAppend =""
+  let HTMLContentToAppend = "";
 
-    for (let i=1; i<6; i++){
-        if (i<=score) {HTMLContentToAppend += `<span class="fa fa-star checked" ></span>`}
-        else {HTMLContentToAppend += `<span class="fa fa-star" ></span>`}
+  for (let i = 1; i < 6; i++) {
+    if (i <= score) {
+      HTMLContentToAppend += `<span class="fa fa-star checked" ></span>`;
+    } else {
+      HTMLContentToAppend += `<span class="fa fa-star" ></span>`;
     }
-    return HTMLContentToAppend
+  }
+  return HTMLContentToAppend;
 }
 
-let rateButton = document.getElementById('rateBtn')
-rateButton.addEventListener('click',rate);
+let rateButton = document.getElementById("rateBtn");
+rateButton.addEventListener("click", rate);
 
-function rate(){
-    console.log("btn clicked")
-    let comentario = document.getElementById("comentario");
-    let puntuacion = document.getElementById("puntuacion")
+function rate() {
+  console.log("btn clicked");
+  let comment = document.getElementById("comment");
+  let score = document.getElementById("score");
 
-    let newRate = {
-        dateTime: Date(),
-        description:comentario.value,
-        product: currentProduct.id,
-        score: parseFloat(puntuacion.value),
-        user: localStorage.getItem("emailUsuario")
-    }
+  let newRate = {
+    dateTime: Date(),
+    description: comment.value,
+    product: currentProduct.id,
+    score: parseFloat(score.value),
+    user: localStorage.getItem("emailUsuario"),
+  };
 
-    console.log(newRate)
+  currentComments.push(newRate);
 
-    currentComments.push(newRate)
-
-    console.log(currentComments)
-
-    productComments.innerHTML = ""
-    appendComments()
+  productComments.innerHTML = "";
+  appendComments();
 }
 
+function showRelatedProducts() {
+  let product = currentProduct;
+  HTMLContentToAppend = "";
 
-
-function showRelatedProducts(){
-
-    let product = currentProduct
-    HTMLContentToAppend= ""
-
-    for (let relatedProduct of product.relatedProducts){
-
+  for (let relatedProduct of product.relatedProducts) {
     HTMLContentToAppend += `
     <div class="container">
         <div class="col">
@@ -232,31 +210,24 @@ function showRelatedProducts(){
             </div>
         </div>
     </div>
-        `
-    }
-    relatedProducts.innerHTML += HTMLContentToAppend
-
+        `;
+  }
+  relatedProducts.innerHTML += HTMLContentToAppend;
 }
 
+document.addEventListener("DOMContentLoaded", function (e) {
+  getJSONData(URL).then(function (resultObj) {
+    if (resultObj.status === "ok") {
+      currentProduct = resultObj.data;
+      showProduct();
+      showRelatedProducts();
+    }
+  });
 
-
-
-document.addEventListener("DOMContentLoaded", function(e){
-    getJSONData(URL).then(function(resultObj){
-        if (resultObj.status === "ok"){
-            currentProduct = resultObj.data
-            showProduct()
-            showRelatedProducts()
-
-        }
-    })
-
-    getJSONData(URLcomment).then(function(resultObj){
-        if (resultObj.status === "ok"){
-            currentComments = resultObj.data
-            appendComments()
-        }
-    })
-
-})
-
+  getJSONData(URLcomment).then(function (resultObj) {
+    if (resultObj.status === "ok") {
+      currentComments = resultObj.data;
+      appendComments();
+    }
+  });
+});

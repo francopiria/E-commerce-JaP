@@ -1,43 +1,40 @@
 console.log("buenos dias");
 
-if (!localStorage.getItem("emailUsuario")){
-    window.location.href = "login.html"
+if (!localStorage.getItem("emailUsuario")) {
+  window.location.href = "login.html";
 }
-
 
 let dzoptions = {
-    url:"/",
-    autoQueue: false
+  url: "/",
+  autoQueue: false,
 };
-let myDropzone = new Dropzone("div#file-upload", dzoptions); 
+let myDropzone = new Dropzone("div#file-upload", dzoptions);
 
-
-
-let primerNombre = document.getElementById("primer-nombre");
-let segundoNombre = document.getElementById("segundo-nombre");
-let primerApellido = document.getElementById("primer-apellido");
-let segundoApellido = document.getElementById("segundo-apellido");
+let firstName = document.getElementById("first-name");
+let secondName = document.getElementById("second-name");
+let surname = document.getElementById("surname");
+let secondSurname = document.getElementById("second-surname");
 let email = document.getElementById("email");
-let telefono = document.getElementById("telefono");
-let previewImage = document.getElementById("preview")
+let phone = document.getElementById("phone");
+let previewImage = document.getElementById("preview");
 
-let archivo = document.getElementById("archivo");
+let file = document.getElementById("file");
 
-archivo.addEventListener("change", procesarArchivo)
+file.addEventListener("change", procesarArchivo);
 
-function procesarArchivo(input){
-    let imagen = input.target.files[0];
-    let lector = new FileReader();
-    lector.addEventListener("load", mostrarImagen)
-    lector.readAsDataURL(imagen)
+function procesarArchivo(input) {
+  let imagen = input.target.files[0];
+  let lector = new FileReader();
+  lector.addEventListener("load", mostrarImagen);
+  lector.readAsDataURL(imagen);
 }
 
-function mostrarImagen(event){
-    let imagenSource = event.target.result;
-    previewImage = document.getElementById("preview");
-    previewImage.src = imagenSource;
+function mostrarImagen(event) {
+  let imagenSource = event.target.result;
+  previewImage = document.getElementById("preview");
+  previewImage.src = imagenSource;
 
-    console.log(previewImage)
+  console.log(previewImage);
 }
 
 // function getBase64Image(img) {
@@ -55,66 +52,64 @@ function mostrarImagen(event){
 
 email.value = localStorage.getItem("emailUsuario");
 
-if(localStorage.getItem("datosUsuarioLS")){
-    let datosUsuario = JSON.parse(localStorage.getItem("datosUsuarioLS"))
-    primerNombre.value = datosUsuario.primerNombre
-    segundoNombre.value = datosUsuario.segundoNombre
-    primerApellido.value = datosUsuario.primerApellido
-    segundoApellido.value = datosUsuario.segundoApellido
-    email.value = datosUsuario.email
-    telefono.value = datosUsuario.telefono
-    previewImage = datosUsuario.imagen
-
+if (localStorage.getItem("userDataLS")) {
+  let userData = JSON.parse(localStorage.getItem("userDataLS"));
+  firstName.value = userData.firstName;
+  secondName.value = userData.secondName;
+  surname.value = userData.surname;
+  secondSurname.value = userData.secondSurname;
+  email.value = userData.email;
+  phone.value = userData.phone;
+  previewImage = userData.imagen;
 } else {
-    let datosUsuario = {
-        primerNombre: primerNombre.value,
-        segundoNombre: segundoNombre.value,
-        primerApellido: primerApellido.value,
-        segundoApellido: segundoApellido.value,
-        email: email.value,
-        telefono: telefono.value,
-    }
-    }
+  let userData = {
+    firstName: firstName.value,
+    secondName: secondName.value,
+    surname: surname.value,
+    secondSurname: secondSurname.value,
+    email: email.value,
+    phone: phone.value,
+  };
+}
 
 let profileForm = document.getElementById("profile-form");
 
-profileForm.addEventListener("submit", function(e){
+profileForm.addEventListener("submit", function (e) {
+  e.preventDefault();
 
-    e.preventDefault();
+  let infoMissing = false;
 
-    let infoMissing = false;
+  firstName.classList.remove("is-invalid");
+  surname.classList.remove("is-invalid");
+  email.classList.remove("is-invalid");
 
-    primerNombre.classList.remove('is-invalid');
-    primerApellido.classList.remove('is-invalid');
-    email.classList.remove('is-invalid');
+  if (firstName.value === "") {
+    firstName.classList.add("is-invalid");
+    infoMissing = true;
+  }
 
-    if (primerNombre.value ===""){
-        primerNombre.classList.add('is-invalid');
-        infoMissing = true;
-    }
+  if (surname.value === "") {
+    surname.classList.add("is-invalid");
+    infoMissing = true;
+  }
 
-    if (primerApellido.value ===""){
-        primerApellido.classList.add('is-invalid');
-        infoMissing = true;
-    }
+  if (email.value === "") {
+    email.classList.add("is-invalid");
+    infoMissing = true;
+  }
 
-    if (email.value ===""){
-        email.classList.add('is-invalid');
-        infoMissing = true;
-    }
+  if (!infoMissing) {
+    userData = {
+      firstName: firstName.value,
+      secondName: secondName.value,
+      surname: surname.value,
+      secondSurname: secondSurname.value,
+      email: email.value,
+      phone: phone.value,
+      imagen: previewImage,
+    };
+    console.log(userData);
 
-    if (!infoMissing){
-        datosUsuario = {
-            primerNombre: primerNombre.value,
-            segundoNombre: segundoNombre.value,
-            primerApellido: primerApellido.value,
-            segundoApellido: segundoApellido.value,
-            email: email.value,
-            telefono: telefono.value,
-            imagen: previewImage
-        }
-        console.log(datosUsuario)
-
-        localStorage.setItem("datosUsuarioLS", JSON.stringify(datosUsuario))
-    }
-})
+    localStorage.setItem("userDataLS", JSON.stringify(userData));
+  }
+});

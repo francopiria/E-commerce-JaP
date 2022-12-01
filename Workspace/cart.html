@@ -93,7 +93,7 @@
                   class="form-check-input"
                   onclick="calculateCostoDeEnvio()"
                   type="radio"
-                  name="tipo-de-envio"
+                  name="shipping-option"
                   id="premium"
                   value="0.15"
                   required
@@ -107,7 +107,7 @@
                   class="form-check-input"
                   onclick="calculateCostoDeEnvio()"
                   type="radio"
-                  name="tipo-de-envio"
+                  name="shipping-option"
                   id="express"
                   value="0.07"
                 />
@@ -119,7 +119,7 @@
                   class="form-check-input"
                   onclick="calculateCostoDeEnvio()"
                   type="radio"
-                  name="tipo-de-envio"
+                  name="shipping-option"
                   id="standard"
                   value="0.05"
                   checked="checked"
@@ -146,12 +146,12 @@
 
               <div class="mb-3 row">
                 <div class="col">
-                  <label for="calle" class="form-label">Calle</label>
+                  <label for="street" class="form-label">Calle</label>
                   <input
                     type="text"
                     class="form-control mb-3"
-                    name="calle"
-                    id="calle"
+                    name="street"
+                    id="street"
                     placeholder="Av Las Marmotas"
                     required
                   />
@@ -162,13 +162,13 @@
                 </div>
 
                 <div class="col">
-                  <label for="numero" class="form-label">Número</label>
+                  <label for="doorNumber" class="form-label">Número de Puerta</label>
                   <input
                     type="number"
                     min="0"
                     class="form-control"
-                    name="numero"
-                    id="numero"
+                    name="doorNumber"
+                    id="doorNumber"
                     placeholder="1234"
                     required
                   />
@@ -181,12 +181,12 @@
               </div>
 
               <div class="mb-3">
-                <label for="esquina" class="form-label">Esquina</label>
+                <label for="square" class="form-label">Esquina</label>
                 <input
                   type="text"
                   class="form-control"
-                  name="esquina"
-                  id="esquina"
+                  name="square"
+                  id="square"
                   placeholder="Trinadoras"
                   required
                 />
@@ -222,7 +222,7 @@
                       <p>Costo de Envío</p>
                     </div>
                     <div class="col-2">
-                      <p id="costo-envio">ENV</p>
+                      <p id="shipping-cost">ENV</p>
                     </div>
                   </div>
                 </div>
@@ -250,12 +250,12 @@
                 <!-- <input
                   type="text"
                   class="form-control"
-                  name="pago-seleccionado
-                  id="pago-seleccionado"
+                  name="choosen-payment-option
+                  id="choosen-payment-option"
                   placeholder="No ha seleccionado"
                   required
                 /> -->
-                <p id="pago-seleccionado">
+                <p id="choosen-payment-option">
                   No ha Seleccionado</p>
                 <a
                   class="px-3"
@@ -315,7 +315,7 @@
                     class="form-check-credit"
                     type="radio"
                     onclick="paymentMethodSelected()"
-                    name="tipo-de-pago"
+                    name="payment-option"
                     id="credit"
                     value="credit"
                     
@@ -327,14 +327,14 @@
                 <fieldset id="credit-fieldset">
                   <div class="row">
                     <div class="col-6">
-                      <label for="numero-tarjeta" class="form-label"
+                      <label for="card-number" class="form-label"
                         >Numero de Tarjeta</label
                       >
                       <input
                         type="number"
                         class="form-control mb-3"
-                        name="numero-tarjeta"
-                        id="numero-tarjeta"
+                        name="card-number"
+                        id="card-number"
                         placeholder="1234-5678-9123-4567"
                         min="100000000000"
                         max="999999999999"
@@ -347,14 +347,14 @@
                     </div>
 
                     <div class="col-6">
-                      <label for="codigo-seguridad" class="form-label"
+                      <label for="security-code" class="form-label"
                         >Código de Seg.</label
                       >
                       <input
                         type="number"
                         class="form-control mb-3"
-                        name="codigo-seguridad"
-                        id="codigo-seguridad"
+                        name="security-code"
+                        id="security-code"
                         placeholder="123"
                         min=1
                         max=9999
@@ -369,19 +369,19 @@
                   
                   <div class="row">
                     <div class="col-6">
-                      <label for="vencimiento" class="form-label"
-                        >Vencimiento</label
+                      <label for="expiration" class="form-label"
+                        >expiration</label
                       >
                       <input
                         type="month"
                         class="form-control mb-3"
-                        name="vencimiento"
-                        id="vencimiento"
+                        name="expiration"
+                        id="expiration"
                         required
                       />
                       <div class="valid-feedback">Dato ingresado!</div>
                       <div class="invalid-feedback">
-                        Por favor, ingresa el vencimiento de la tarjeta :)
+                        Por favor, ingresa el expiration de la tarjeta :)
                       </div>
                     </div>
                   </div>
@@ -393,7 +393,7 @@
                     class="form-check-transf"
                     type="radio"
                     onclick="paymentMethodSelected()"
-                    name="tipo-de-pago"
+                    name="payment-option"
                     id="transf"
                     value="transf"
                   />
@@ -401,14 +401,14 @@
                 </div>
                 <hr />
                 <div class="col-6">
-                  <label for="numero-cuenta" class="form-label"
+                  <label for="account-number" class="form-label"
                     >Número de Cuenta</label
                   >
                   <input
                     type="number"
                     class="form-control mb-3"
-                    name="numero-cuenta"
-                    id="numero-cuenta"
+                    name="account-number"
+                    id="account-number"
                     placeholder="123456789"
                     min="1"
                     required
