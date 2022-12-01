@@ -152,17 +152,21 @@ document.addEventListener("DOMContentLoaded", function(e){
         showProductsList();
     });
 
-    document.getElementById("buscador").addEventListener("keyup", function(){
+    function capitalizeFirstLetter(string){
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
 
-        
-        //Tengo que modificar el currentProductsArray
-        // y luego ejecutar showProductsList()
+    buscador.addEventListener("keyup", function(){
 
-        currentProductsArray = currentProductsArray.filter(currentProductsArray => currentProductsArray.name.includes(buscador.value))
+        console.log(buscador.value)
+
+        currentProductsArray = currentProductsArray.filter(currentProductsArray =>
+            currentProductsArray.name.toLowerCase().includes(buscador.value.toLowerCase()) || 
+            currentProductsArray.description.toLowerCase().includes(buscador.value.toLowerCase()))
+
+        console.log(currentProductsArray)
 
         showProductsList();
-
-        //me falta pasar el texto ingresado a minuscula pero son doce menos 5 jeje
         
     });
 

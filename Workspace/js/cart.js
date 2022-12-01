@@ -40,69 +40,59 @@ let pagoSeleccionado = document.getElementById("pago-seleccionado")
     //pero los objetos no son iterables, entonces convierto en array
     articles = Object.values(articles)
 
-
-function createCartTable(){
-    for (let article of articles)
-    {   
-        let cartTR = document.createElement("tr");
-        cartTR.innerHTML = `
-        <th scope="row">${article.count}</th>
-        <td><img class="cartIMG" src="${article.image}"></td>
-        <td>${article.name}</td>
-        <td>${article.currency + " " +article.unitCost}</td>
-        <td> <input type="number" value="${article.count}" minlength= 1 required > </td>
-        <td class="subtotal">${article.currency + " " + article.unitCost*article.count}</td>
-        `
-        cartBody.appendChild(cartTR)
-
-        subtotalFinalValue += article.unitCost*article.count
-    }
-}
-
-function showCart(){
-    console.log(articles)
-    subtotalFinalValue = 0
-    for (let article of articles)
-    {   
-        let cartTR = document.createElement("tr");
-        cartTR.innerHTML = `
-        <th scope="row">${articles.indexOf(article) + 1}</th>
-        <td><img class="cartIMG" src="${article.image}"></td>
-        <td>${article.name}</td>
-        <td>${article.currency + " " +article.unitCost}</td>
-        <td> <input type="number" value="${article.count}" min=1 required > </td>
-        <td class="subtotal">${article.currency + " " + article.unitCost*article.count}</td>
-        `
-        cartBody.appendChild(cartTR)
-
-        subtotalFinalValue += article.unitCost*article.count
-       
-        
-        let input = cartTR.querySelector("input")
-        input.addEventListener("input",()=>{
-
-            article.count = input.value
-            localStorage.setItem("articlesInCart", JSON.stringify(articles))
-            console.log(articles)
+    function showCart(){
+        console.log(articles)
+        subtotalFinalValue = 0
+        for (let article of articles)
+        {   
+            let cartTR = document.createElement("tr");
+            cartTR.innerHTML = `
+            <th scope="row"><button type="button" class="btn btn-danger btn-delete">X</button></th>
+            <td><img class="cartIMG" src="${article.image}"></td>
+            <td>${article.name}</td>
+            <td>${article.currency + " " +article.unitCost}</td>
+            <td> <input type="number" value="${article.count}" min=1 required > </td>
+            <td class="subtotal">${article.currency + " " + article.unitCost*article.count}</td>
+            `
+            cartBody.appendChild(cartTR)
+    
+            subtotalFinalValue += article.unitCost*article.count
+           
             
-            // let subtotal = Math.round((article.count* article.unitCost)*100)/100
-            let subtotal = (article.count* article.unitCost).toFixed(2)
-
-            cartTR.querySelector(".subtotal").innerHTML= `${article.currency} ${subtotal}`
-
-            subtotalFinalValue = 0
-            for (articlee of articles){
-                subtotalFinalValue+= articlee.unitCost*articlee.count
-            }
-            subtotalFinal.innerHTML= "USD " + subtotalFinalValue.toFixed(2)
-
-            calculateCostoDeEnvio()
-
-        })
+            let input = cartTR.querySelector("input")
+    
+            input.addEventListener("input",()=>{
+    
+                article.count = input.value
+                localStorage.setItem("articlesInCart", JSON.stringify(articles))
+                console.log(articles)
+                
+                // let subtotal = Math.round((article.count* article.unitCost)*100)/100
+                let subtotal = (article.count* article.unitCost).toFixed(2)
+    
+                cartTR.querySelector(".subtotal").innerHTML= `${article.currency} ${subtotal}`
+    
+                subtotalFinalValue = 0
+                for (articlee of articles){
+                    subtotalFinalValue+= articlee.unitCost*articlee.count
+                }
+                subtotalFinal.innerHTML= "USD " + subtotalFinalValue.toFixed(2)
+    
+                calculateCostoDeEnvio()
+            })
+    
+            let deleteBtn = cartTR.querySelector(".btn-delete")
+    
+            deleteBtn.addEventListener("click",()=>{
+            articles.splice(articles.indexOf(article), 1)
+            localStorage.setItem("articlesInCart", JSON.stringify(articles))
+            cartBody.innerHTML = []
+            showCart()
+            });
+        }
+        subtotalFinal.innerHTML= "USD " + Math.round(subtotalFinalValue*100)/100
+        console.log(articles)
     }
-    subtotalFinal.innerHTML= "USD " + Math.round(subtotalFinalValue*100)/100
-    console.log(articles)
-}
 
 
 function radioSeleccionado (radios){

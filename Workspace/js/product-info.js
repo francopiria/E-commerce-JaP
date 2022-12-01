@@ -149,10 +149,11 @@ function appendImages(){
 
 function appendComments(){
 
-    let HTMLContentToAppend = "";
-    let comments = currentComments
+    console.log(currentComments)
 
-    for (let comment of comments){
+    let HTMLContentToAppend = "";
+
+    for (let comment of currentComments){
 
         HTMLContentToAppend += `
         <div class="container">
@@ -170,6 +171,8 @@ function appendComments(){
 
 }
 
+
+
 function stars(score) {
     let HTMLContentToAppend =""
 
@@ -178,6 +181,32 @@ function stars(score) {
         else {HTMLContentToAppend += `<span class="fa fa-star" ></span>`}
     }
     return HTMLContentToAppend
+}
+
+let rateButton = document.getElementById('rateBtn')
+rateButton.addEventListener('click',rate);
+
+function rate(){
+    console.log("btn clicked")
+    let comentario = document.getElementById("comentario");
+    let puntuacion = document.getElementById("puntuacion")
+
+    let newRate = {
+        dateTime: Date(),
+        description:comentario.value,
+        product: currentProduct.id,
+        score: parseFloat(puntuacion.value),
+        user: localStorage.getItem("emailUsuario")
+    }
+
+    console.log(newRate)
+
+    currentComments.push(newRate)
+
+    console.log(currentComments)
+
+    productComments.innerHTML = ""
+    appendComments()
 }
 
 
@@ -209,17 +238,7 @@ function showRelatedProducts(){
 
 }
 
-function rate(){
-    let product = localStorage.getItem("productID")
-    let score = document.getElementById('puntuacion')
-    let description = document.getElementById('comentario')
-    let user = localStorage.getItem("emailUsuario")
-    let dateTime = Date()
 
-    let newComment = {"product": product, "score":score, "description": description, "user": user, "dateTime": dateTime}
-
-    currentComments += newComment
-}
 
 
 document.addEventListener("DOMContentLoaded", function(e){
@@ -238,13 +257,6 @@ document.addEventListener("DOMContentLoaded", function(e){
             appendComments()
         }
     })
-
-    let button = document.getElementById('rateBtn')
-    button.addEventListener('click',rate)
-
-    
-
-
 
 })
 
