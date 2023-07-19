@@ -1,2 +1,2 @@
 # E-commerce-JaP
-Proyecto E-commerce de Jóvenes a Programar
+E-commerce project Jóvenes a Programar 2022
